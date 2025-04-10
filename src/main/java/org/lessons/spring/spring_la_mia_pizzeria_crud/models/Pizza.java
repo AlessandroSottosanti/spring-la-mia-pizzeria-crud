@@ -1,6 +1,7 @@
 package org.lessons.spring.spring_la_mia_pizzeria_crud.models;
 
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,20 +25,22 @@ public class Pizza {
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
     private Integer id;
     
-    @NotBlank
+    @NotBlank(message = "required")
     @Column(name = "pizza_name")
-    @Size(min = 2, message = "the name must be of 3 or more characters")
+    @Size(min = 2, max = 15, message = "the name must be of 3 or more characters and max 15 characters")
     private String name;
 
-    @Lob 
+    @Lob
+    @NotBlank(message = "required")
+    @Size(max = 50, message = "description must be less or equals to 50 characters")
     private String description;
 
     @Column(name = "pizza_image")
     private String image;
 
     @NotNull
-    @Min( value = 0, message = "price can not be null")
-    private BigDecimal price;
+    @Min( value = 0, message = "price can not be less then 0")
+    private BigDecimal price = BigDecimal.ZERO;
 
 
     // Getter e Setter
@@ -75,6 +78,9 @@ public class Pizza {
     }
 
     public BigDecimal getPrice() {
+        if (this.price == null) {
+            return BigDecimal.ZERO;
+        }
         return price.setScale(2, RoundingMode.UP);
     }
 

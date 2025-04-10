@@ -48,7 +48,7 @@
 <body>
     <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 
-    <div class="container mt-5">
+    <div class="container my-5">
         <h1 class="text-center mb-4 text-dark">Our Delicious Pizza Menu 🍕</h1>
 
         <!-- Search form -->
@@ -59,6 +59,8 @@
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </div>
         </form>
+
+        <a th:href="@{/menu/create}" class="btn btn-primary my-3">+ Add a new pizza to the menu</a>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col" th:each="pizza : ${pizzas}">
