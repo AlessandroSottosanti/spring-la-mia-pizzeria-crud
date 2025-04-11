@@ -65,9 +65,32 @@ public class PizzaController {
         if (bindingResult.hasErrors()) {
             return "pizzas/create";
         }
-        // Salvataggio nel DB
+
         repo.save(formPizza);
         return "redirect:/menu"; // Redirect alla lista delle pizze
     }
 
+    // Per la visualizzazione della pagina di modifica
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("pizza", repo.findById(id).get());
+        return "pizzas/edit";
+    }
+
+    // per il salvataggio delle modifiche nel DB
+    @PostMapping("/edit/{id}")
+    public String update(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "pizzas/edit";
+        }
+
+        repo.save(formPizza);
+        return "redirect:/menu"; 
+    }
+
+    @PostMapping("/delete/{id}")
+     public String delete(@PathVariable Integer id) {
+         repo.deleteById(id);
+         return "redirect:/menu";
+     }
 }
